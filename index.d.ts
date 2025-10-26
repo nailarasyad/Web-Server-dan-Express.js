@@ -1,15 +1,41 @@
-declare namespace getSideChannelWeakMap {
-	type Channel<K, V> = {
-		assert: (key: K) => void;
-		has: (key: K) => boolean;
-		get: (key: K) => V | undefined;
-		set: (key: K, value: V) => void;
-		delete: (key: K) => boolean;
-	}
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License.
+ *  REQUIREMENT: This definition is dependent on the @types/node definition.
+ *  Install with `npm install @types/node --save-dev`
+ *--------------------------------------------------------------------------------------------*/
+
+declare module 'iconv-lite' {
+	// Basic API
+	export function decode(buffer: Buffer | Uint8Array, encoding: string, options?: Options): string;
+
+	export function encode(content: string, encoding: string, options?: Options): Buffer;
+
+	export function encodingExists(encoding: string): boolean;
+
+	// Stream API
+	export function decodeStream(encoding: string, options?: Options): NodeJS.ReadWriteStream;
+
+	export function encodeStream(encoding: string, options?: Options): NodeJS.ReadWriteStream;
+
+	// Low-level stream APIs
+	export function getEncoder(encoding: string, options?: Options): EncoderStream;
+
+	export function getDecoder(encoding: string, options?: Options): DecoderStream;
 }
 
-declare function getSideChannelWeakMap<K, V>(): getSideChannelWeakMap.Channel<K, V>;
+export interface Options {
+    stripBOM?: boolean;
+    addBOM?: boolean;
+    defaultEncoding?: string;
+}
 
-declare const x: false | typeof getSideChannelWeakMap;
+export interface EncoderStream {
+	write(str: string): Buffer;
+	end(): Buffer | undefined;
+}
 
-export = x;
+export interface DecoderStream {
+	write(buf: Buffer): string;
+	end(): string | undefined;
+}
