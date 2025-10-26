@@ -1,19 +1,10 @@
-sudo: false
 language: node_js
 node_js:
-  - "4"
-  - "iojs"
-  - "0.12"
-  - "0.10"
+  - node
+  - lts/*
 script:
-  - "npm run test-travis"
-after_script:
-  - "npm install coveralls@2 && cat coverage/lcov.info | coveralls"
-matrix:
-  fast_finish: true
-notifications:
-  irc:
-    channels:
-      - "irc.freenode.org#unshift"
-    on_success: change
-    on_failure: change
+  - npm run lint
+  # test-coverage will also run the tests, but does not print helpful output upon test failure.
+  # So we also run the tests separately.
+  - npm run test
+  - npm run test-coverage && cat coverage/lcov.info | ./node_modules/.bin/coveralls && rm -rf coverage
